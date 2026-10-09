@@ -665,7 +665,7 @@ const Pano=(function(){
     try{gl=canvas.getContext('webgl',{antialias:true})||canvas.getContext('experimental-webgl');}catch(e){gl=null;}
     if(!gl)return false;
     const vs='attribute vec3 aPos;uniform mat3 uCam;uniform float uAspect;uniform float uTanH;varying vec3 vDir;'+
-      'void main(){vDir=normalize(uCam*normalize(aPos));gl_Position=vec4(aPos.x/uAspect,aPos.y,aPos.z,aPos.z*uTanH);}';
+      'void main(){vDir=normalize(uCam*normalize(aPos));gl_Position=vec4(aPos.x/uAspect,aPos.y,0.0,aPos.z);}';
     const fs='precision mediump float;varying vec3 vDir;uniform sampler2D uTex;'+
       'void main(){float lon=atan(vDir.x,vDir.z);float lat=asin(clamp(vDir.y,-1.0,1.0));'+
       'vec2 uv=vec2(lon/6.28318530718+0.5,0.5-lat/3.14159265);gl_FragColor=texture2D(uTex,uv);}';
@@ -850,6 +850,18 @@ $('#embedClose').addEventListener('click',()=>{
    الإقلاع
 ========================================================= */
 initMap();
+
+/* روابط مباشرة: #s=معبد&t=pano تفتح الموقع والجولة تلقائياً */
+(function(){
+  const m={};
+  location.hash.slice(1).split('&').filter(Boolean).forEach(kv=>{const p=kv.split('=');m[p[0]]=decodeURIComponent(p[1]||'');});
+  if(!m.s)return;
+  const s=SITES.find(x=>x.id===m.s);
+  if(!s)return;
+  openSite(s.id,false);
+  if(m.t==='pano'&&s.pano)setTimeout(()=>openPano(s),700);
+  else if(m.t==='tour'&&s.tour)setTimeout(()=>openEmbedTour(s),700);
+})();
 </script>
 </body>
 </html>
