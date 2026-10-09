@@ -141,6 +141,14 @@ main{flex:1;display:flex;min-height:0}
 #hsCard p{margin:0;font-size:12.5px;line-height:1.8;color:#e8dfc6}
 #hsCard button{margin-top:8px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:3px 12px;cursor:pointer;font-family:inherit;font-size:11.5px}
 .hidden{display:none!important}
+/* نقاط التنقل بين الأماكن (الجولة 3D) */
+.hs.nav .arrow{width:56px;height:56px;border-radius:50%;background:var(--gold);color:#141414;font-size:28px;
+  display:flex;align-items:center;justify-content:center;font-weight:900;
+  box-shadow:0 0 0 7px rgba(217,180,91,.28),0 6px 20px #000a;animation:hsPulse 2s infinite}
+.hs.nav .lbl{font-size:12.5px}
+#partsBar .nodebtn{border-color:var(--gold);color:var(--gold2);background:#22183a;font-weight:700}
+#partsBar .nodebtn.on{background:var(--gold);color:#141414}
+#nodeFade{position:absolute;inset:0;background:#000;opacity:0;transition:opacity .26s;pointer-events:none;z-index:40}
 
 /* نافذة فيديو المقدمة */
 #videoModal{position:fixed;inset:0;background:#000;z-index:1550;display:none}
@@ -199,6 +207,7 @@ main{flex:1;display:flex;min-height:0}
 <!-- نافذة الجولة 360 -->
 <div id="panoModal">
   <canvas id="panoCanvas"></canvas>
+  <div id="nodeFade"></div>
   <img id="panoImgFallback" alt="">
   <div id="hsLayer"></div>
   <div class="pano-top">
@@ -250,6 +259,7 @@ const SITES=[
 {id:'giza',name:'أهرامات الجيزة وأبو الهول',type:'pyramid',lat:29.9792,lng:31.1342,zoom:14,
  era:'الدولة القديمة — الأسرة الرابعة (نحو 2560 ق.م)',builder:'الملوك خوفو وخفرع ومنقرع',
  photo:'assets/img/giza.webp',audio:'assets/audio/giza.mp3',pano:'assets/pano/giza.jpg',
+ nodes:[{img:'assets/pano/giza.jpg',label:'بين الأهرامات وأبو الهول'},{img:'assets/pano/giza_base.jpg',label:'عند قاعدة الهرم الأكبر'},{img:'assets/pano/giza_sphinx.jpg',label:'أمام أبو الهول'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/the-sphinx-and-the-pyramids',
  tourLabel:'🌐 بانوراما حقيقية: أبو الهول والأهرامات (360Cities)',
@@ -272,6 +282,7 @@ const SITES=[
 {id:'saqqara',name:'سقارة — هرم زوسر المدرج',type:'pyramid',lat:29.8713,lng:31.2166,zoom:14,
  era:'الأسرة الثالثة (نحو 2650 ق.م)',builder:'الملك زوسر — تصميم إمحوتب',
  photo:'assets/img/saqqara.jpg',audio:'assets/audio/saqqara.mp3',pano:'assets/pano/saqqara.jpg',
+ nodes:[{img:'assets/pano/saqqara.jpg',label:'مجمع هرم زوسر'},{img:'assets/pano/saqqara_col.jpg',label:'بهو المدخل المسقوف'},{img:'assets/pano/saqqara_base.jpg',label:'عند قاعدة الهرم'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/saqqra-temple-and-step-pyramid-of-djoser',
  tourLabel:'🌐 بانوراما حقيقية: مجمع هرم زوسر (360Cities)',
@@ -292,6 +303,7 @@ const SITES=[
 {id:'karnak',name:'معبد الكرنك ومسلاته',type:'temple',lat:25.7188,lng:32.6573,zoom:15,
  era:'من الدولة الوسطى إلى البطلمية (نحو 2000–50 ق.م)',builder:'أكثر من 30 فرعوناً عبر 2000 عام',
  photo:'assets/img/karnak.jpg',audio:'assets/audio/karnak.mp3',pano:'assets/pano/karnak.jpg',
+ nodes:[{img:'assets/pano/karnak.jpg',label:'صالة الأعمدة الكبرى'},{img:'assets/pano/karnak_court.jpg',label:'الفناء الأول'},{img:'assets/pano/karnak_deep.jpg',label:'عمق المعبد والمسلات'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/karnakhypostyle',
  tourLabel:'🌐 بانوراما حقيقية: داخل صالة الأعمدة الكبرى (360Cities)',
@@ -313,6 +325,7 @@ const SITES=[
 {id:'luxor',name:'معبد الأقصر ومسلة رمسيس',type:'temple',lat:25.7003,lng:32.6396,zoom:15,
  era:'الدولة الحديثة (نحو 1400–1200 ق.م)',builder:'أمنحتب الثالث ورمسيس الثاني',
  photo:'assets/img/luxor.jpg',audio:'assets/audio/luxor.mp3',pano:'assets/pano/luxor.jpg',
+ nodes:[{img:'assets/pano/luxor.jpg',label:'فناء أمنحتب الثالث'},{img:'assets/pano/luxor_col.jpg',label:'ممر الأعمدة الكبير'},{img:'assets/pano/luxor_court.jpg',label:'فناء رمسيس الثاني'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/luxor-temple-courtyard-of-amenhotep-iii-luxor-amp-karnak',
  tourLabel:'🌐 بانوراما حقيقية: فناء أمنحتب الثالث (360Cities)',
@@ -333,6 +346,7 @@ const SITES=[
 {id:'deir',name:'معبد حتشبسوت — الدير البحري',type:'temple',lat:25.7382,lng:32.6064,zoom:15,
  era:'الدولة الحديثة — الأسرة 18 (نحو 1470 ق.م)',builder:'الملكة حتشبسوت — تصميم سنموت',
  photo:'assets/img/hatshepsut.jpg',audio:'assets/audio/hatshepsut.mp3',pano:'assets/pano/hatshepsut.jpg',
+ nodes:[{img:'assets/pano/hatshepsut.jpg',label:'الشرفة العليا'},{img:'assets/pano/deir_low.jpg',label:'الأدرج والشرفة الأولى'},{img:'assets/pano/deir_hathor.jpg',label:'بهو حتحور'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/mortuary-temple-of-hatshepsut',
  tourLabel:'🌐 بانوراما حقيقية: معبد حتشبسوت (360Cities)',
@@ -816,26 +830,22 @@ const Pano=(function(){
       tYaw=target;tPitch=p.hp[1]*D2R;
     }
   }
+  let nodes=[],nodeIdx=0;
   function open(url,site){
     canvas=canvas||$('#panoCanvas');
     layer=layer||$('#hsLayer');
     cardEl=cardEl||$('#hsCard');
     parts=site.parts;
-    $('#panoTitle').textContent='🧭 '+site.name+' — جولة 360°';
+    nodes=(site.nodes&&site.nodes.length)?site.nodes:[];
+    nodeIdx=0;
+    $('#panoTitle').textContent='🧭 '+site.name+(nodes.length?' — '+nodes[0].label:' — جولة 360°');
     cardEl.classList.add('hidden');
-    /* النقاط الذهبية */
-    layer.innerHTML='';hotspots=[];
-    parts.forEach((p,i)=>{if(!p.hp)return;
-      const el=document.createElement('div');el.className='hs';
-      el.innerHTML='<span class="dot2"></span><span class="lbl">'+p.name+'</span>';
-      el.addEventListener('click',()=>focusPart(i));
-      layer.appendChild(el);
-      hotspots.push({yaw:p.hp[0],pitch:p.hp[1],el});
-    });
-    /* شريط الأجزاء */
+    /* شريط الأجزاء + أزرار الأماكن */
     const bar=$('#partsBar');
-    bar.innerHTML=parts.map((p,i)=>`<button data-i="${i}">${p.name}</button>`).join('');
-    bar.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>focusPart(+b.dataset.i)));
+    bar.innerHTML=nodes.map((n,i)=>`<button class="nodebtn" data-n="${i}">🚶 ${n.label}</button>`).join('')
+      +parts.map((p,i)=>`<button data-i="${i}">${p.name}</button>`).join('');
+    bar.querySelectorAll('.nodebtn').forEach(b=>b.addEventListener('click',()=>switchNode(+b.dataset.n)));
+    bar.querySelectorAll('button[data-i]').forEach(b=>b.addEventListener('click',()=>focusPart(+b.dataset.i)));
     /* عارض */
     if(!ready){ready=init();}
     const fb=$('#panoImgFallback');
@@ -843,13 +853,55 @@ const Pano=(function(){
       canvas.style.display='block';fb.style.display='none';
       running=false;cancelAnimationFrame(raf);
       interacted=false;tYaw=null;
-      yaw=hotspots.length?hotspots[0].yaw*D2R:0;
-      pitch=hotspots.length?hotspots[0].pitch*D2R:0;
-      fov=75*D2R;
-      loadTex(url,()=>{running=true;last=0;raf=requestAnimationFrame(frame);});
+      yaw=0;pitch=-4*D2R;fov=75*D2R;
+      buildHotspots();
+      loadTex(nodes.length?nodes[0].img:url,()=>{running=true;last=0;raf=requestAnimationFrame(frame);});
     }else{
       canvas.style.display='none';fb.style.display='block';fb.src=url;
     }
+    setNodeBar();
+  }
+  function buildHotspots(){
+    /* أجزاء الموقع (في المكان الرئيسي) + نقاط التنقل 3D بين الأماكن */
+    layer.innerHTML='';hotspots=[];
+    if(nodeIdx===0){
+      parts.forEach((p,i)=>{if(!p.hp)return;
+        const el=document.createElement('div');el.className='hs';
+        el.innerHTML='<span class="dot2"></span><span class="lbl">'+p.name+'</span>';
+        el.addEventListener('click',()=>focusPart(i));
+        layer.appendChild(el);
+        hotspots.push({yaw:p.hp[0],pitch:p.hp[1],el});
+      });
+    }
+    if(nodes.length>1){
+      const mk=(target,label,arrow,yp)=>{
+        const el=document.createElement('div');el.className='hs nav';
+        el.innerHTML='<span class="arrow">'+arrow+'</span><span class="lbl">'+label+'</span>';
+        el.addEventListener('click',()=>switchNode(target));
+        layer.appendChild(el);
+        hotspots.push({yaw:yp[0],pitch:yp[1],el});
+      };
+      if(nodeIdx<nodes.length-1)mk(nodeIdx+1,'التالي: '+nodes[nodeIdx+1].label,'➜',[0,-6]);
+      if(nodeIdx>0)mk(nodeIdx-1,'رجوع: '+nodes[nodeIdx-1].label,'⬅',[180,-6]);
+    }
+  }
+  function setNodeBar(){
+    document.querySelectorAll('#partsBar .nodebtn').forEach((b,i)=>b.classList.toggle('on',i===nodeIdx));
+  }
+  function switchNode(i){
+    if(i===nodeIdx||i<0||i>=nodes.length)return;
+    cardEl.classList.add('hidden');
+    const fade=$('#nodeFade');
+    fade.style.opacity='1';
+    setTimeout(()=>{
+      nodeIdx=i;
+      const n=nodes[i];
+      if(ready&&gl){loadTex(n.img,()=>{});}
+      else{const fb=$('#panoImgFallback');if(fb)fb.src=n.img;}
+      buildHotspots();setNodeBar();
+      if(window._curSite)$('#panoTitle').textContent='🧭 '+window._curSite.name+' — '+n.label;
+      fade.style.opacity='0';
+    },260);
   }
   function close(){
     running=false;cancelAnimationFrame(raf);
@@ -862,6 +914,7 @@ const Pano=(function(){
 })();
 
 function openPano(site){
+  window._curSite=site;
   $('#panoModal').classList.add('open');
   Pano.open(site.pano,site);
 }
