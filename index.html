@@ -142,6 +142,18 @@ main{flex:1;display:flex;min-height:0}
 #hsCard button{margin-top:8px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:3px 12px;cursor:pointer;font-family:inherit;font-size:11.5px}
 .hidden{display:none!important}
 
+/* نافذة فيديو المقدمة */
+#videoModal{position:fixed;inset:0;background:#000;z-index:1550;display:none}
+#videoModal.open{display:block}
+#introVideo{width:100%;height:100%;object-fit:contain;background:#000}
+#videoModal .vtop{position:absolute;top:0;inset-inline:0;display:flex;justify-content:space-between;align-items:center;
+  padding:12px 18px;background:linear-gradient(#000c,transparent);z-index:5}
+#videoModal .vtop h3{margin:0;font-size:17px;color:var(--gold2);text-shadow:0 2px 8px #000}
+#videoModal .vbadge{background:var(--gold);color:#141414;font-weight:800;font-size:12px;border-radius:14px;padding:4px 12px}
+#videoSkip{position:absolute;bottom:26px;inset-inline-start:20px;z-index:5;background:#0c1424d9;border:1px solid var(--gold);
+  color:var(--gold2);border-radius:24px;padding:10px 18px;font-family:inherit;font-size:13.5px;cursor:pointer}
+#videoSkip:hover{background:var(--gold);color:#141414}
+
 /* نافذة الجولة الحقيقية */
 #embedModal{position:fixed;inset:0;background:#000;z-index:1600;display:none}
 #embedModal.open{display:block}
@@ -196,6 +208,16 @@ main{flex:1;display:flex;min-height:0}
   <div class="pano-hint">اسحب للدوران 360° &nbsp;•&nbsp; عجلة الفأرة للتقريب &nbsp;•&nbsp; اضغط النقاط الذهبية لمعرفة الأجزاء</div>
   <div id="hsCard" class="hidden"><h4></h4><p></p><button id="hsCardClose">إغلاق</button></div>
   <div id="partsBar"></div>
+</div>
+
+<!-- نافذة فيديو المقدمة السينمائية -->
+<div id="videoModal">
+  <video id="introVideo" playsinline preload="auto"></video>
+  <div class="vtop">
+    <h3 id="videoTitle"></h3>
+    <span class="vbadge">🎬 عرض تعريفي</span>
+  </div>
+  <button id="videoSkip">تخطي وبدء الجولة ⏭</button>
 </div>
 
 <!-- نافذة الجولة الحقيقية (Matterport) -->
@@ -659,7 +681,10 @@ filtersEl.addEventListener('change',()=>{
 });
 
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape')closePano();
+  if(e.key==='Escape'){
+    if($('#videoModal').classList.contains('open')){V.onEnded=null;closeVideo();return;}
+    closePano();
+  }
 });
 
 /* =========================================================
@@ -844,14 +869,37 @@ $('#panoClose').addEventListener('click',closePano);
 $('#hsCardClose').addEventListener('click',()=>$('#hsCard').classList.add('hidden'));
 function closePano(){Pano.close();}
 /* =========================================================
-   الجولات الحقيقية (Matterport وغيرها)
+   فيديو المقدمة السينمائية + الجولات الحقيقية
 ========================================================= */
-function openEmbedTour(site){
+function playIntro(site,then){
+  const m=$('#videoModal'),v=$('#introVideo');
+  if(A.audio)A.audio.pause(); /* منع تداخل الصوتين */
+  $('#videoTitle').textContent='🎬 '+site.name;
+  V.onEnded=then;
+  v.onended=()=>closeVideo();
+  v.onerror=()=>closeVideo(); /* لو مفيش فيديو → جولة مباشرة */
+  m.classList.add('open');
+  v.src='assets/video/'+site.id+'.mp4';
+  v.play().catch(()=>closeVideo());
+}
+function closeVideo(){
+  const m=$('#videoModal'),v=$('#introVideo');
+  if(!m.classList.contains('open'))return;
+  v.pause(); v.removeAttribute('src'); v.load();
+  m.classList.remove('open');
+  if(V.onEnded){const f=V.onEnded;V.onEnded=null;f();}
+}
+const V={onEnded:null};
+function _openEmbedTour(site){
   $('#embedTitle').textContent='🌐 '+site.name+' — جولة حقيقية 360°';
   $('#embedNote').textContent=site.tourCredit||'';
   $('#embedFrame').src=site.tour;
   $('#embedModal').classList.add('open');
 }
+function openEmbedTour(site){
+  playIntro(site,()=>_openEmbedTour(site));
+}
+$('#videoSkip').addEventListener('click',()=>closeVideo()); /* تخطي = بدء الجولة فوراً */
 $('#embedClose').addEventListener('click',()=>{
   $('#embedModal').classList.remove('open');
   $('#embedFrame').src=''; /* إيقاف تشغيل الجولة */
