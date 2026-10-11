@@ -19,13 +19,16 @@ SITES = {
  'luxor':    (f'{PANO}/luxor_court.jpg', f'{PANO}/luxor.jpg',       f'{PANO}/luxor_col.jpg',   'luxor.mp3'),
  'deir':     (f'{PANO}/deir_low.jpg',    f'{PANO}/hatshepsut.jpg',  f'{PANO}/deir_hathor.jpg', 'hatshepsut.mp3'),
  # الباقي مؤقتاً بالأسلوب السابق حتى توليد مشاهد الدخول/العمق الخاصة بها
- 'edfu':     (f'{IMG}/edfu.webp',        f'{PANO}/edfu.jpg',        f'{IMG}/edfu.webp',        'edfu.mp3'),
- 'komombo':  (f'{IMG}/komombo.jpg',      f'{PANO}/komombo.jpg',     f'{IMG}/komombo.jpg',      'komombo.mp3'),
- 'philae':   (f'{IMG}/philae.jpg',       f'{PANO}/philae.jpg',      f'{IMG}/philae.jpg',       'philae.mp3'),
- 'obelisk':  (f'{IMG}/obelisk.jpg',      f'{PANO}/obelisk.jpg',     f'{IMG}/obelisk.jpg',      'obelisk.mp3'),
- 'abusimbel':(f'{IMG}/abusimbel.webp',   f'{PANO}/abusimbel.jpg',   f'{IMG}/abusimbel.webp',   'abusimbel.mp3'),
- 'ramses6':  (f'{IMG}/ramses6.jpg',      None,                      f'{IMG}/ramses6.jpg',      'ramses6.mp3'),
- 'menna':    (f'{IMG}/menna.jpg',        None,                      f'{IMG}/menna.jpg',        'menna.mp3'),
+ 'dendera': (f'{PANO}/dendera_facade.jpg',f'{PANO}/dendera.jpg',   f'{PANO}/dendera_roof.jpg','dendera.mp3'),
+ 'edfu':     (f'{PANO}/edfu_court.jpg',  f'{PANO}/edfu.jpg',        f'{PANO}/edfu_hall.jpg',   'edfu.mp3'),
+ 'komombo':  (f'{PANO}/komombo_court.jpg',f'{PANO}/komombo.jpg',    f'{PANO}/komombo_hall.jpg','komombo.mp3'),
+ 'philae':   (f'{PANO}/philae_col.jpg',  f'{PANO}/philae.jpg',      f'{PANO}/philae_kiosk.jpg','philae.mp3'),
+ 'obelisk':  (f'{PANO}/obelisk_head.jpg',f'{PANO}/obelisk.jpg',     f'{PANO}/obelisk_quarry.jpg','obelisk.mp3'),
+ 'abusimbel':(f'{PANO}/abusimbel_facadesm.jpg',f'{PANO}/abusimbel.jpg',f'{PANO}/abusimbel_sanc.jpg','abusimbel.mp3'),
+ 'gem':(f'{PANO}/gem_exterior.jpg',f'{PANO}/gem_stairs.jpg',f'{PANO}/gem_tut.jpg','gem.mp3'),
+ 'ramses6':  (f'{PANO}/ramses6_desc.jpg',f'{PANO}/ramses6_pillar.jpg',f'{PANO}/ramses6_pillar.jpg','ramses6.mp3'),
+ 'menna':    (f'{PANO}/menna_court.jpg', f'{PANO}/menna_hall.jpg',  f'{PANO}/menna_deep.jpg',  'menna.mp3'),
+ 'meresankh':(f'{PANO}/meresankh_court.jpg',f'{PANO}/meresankh_hall.jpg',f'{PANO}/meresankh_hathor.jpg','meresankh.mp3'),
 }
 
 def dur_of(path):

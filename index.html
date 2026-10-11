@@ -76,7 +76,6 @@ main{flex:1;display:flex;min-height:0}
   background:linear-gradient(135deg,var(--gold),#b98a2e);color:#141414;box-shadow:0 4px 14px #0007;margin-bottom:6px}
 .btn360:hover{filter:brightness(1.08)}
 .btn360.btnReal{background:linear-gradient(135deg,#7c5fc9,#5a3fa0);color:#fff}
-.btn360.btnExt{display:block;text-align:center;text-decoration:none;background:transparent;border:1px solid #7c5fc9;color:#cabdf5;font-size:13.5px}
 .credit-inline{font-size:10.5px;color:#7d8bad;line-height:1.7;margin:2px 0 8px;text-align:center}
 .pad h3{font-size:15px;color:var(--gold);margin:16px 0 6px;border-bottom:1px dashed var(--line);padding-bottom:5px}
 .events{margin:0;padding-inline-start:18px;font-size:13px;line-height:1.9}
@@ -142,13 +141,35 @@ main{flex:1;display:flex;min-height:0}
 #hsCard button{margin-top:8px;background:none;border:1px solid var(--line);color:var(--muted);border-radius:8px;padding:3px 12px;cursor:pointer;font-family:inherit;font-size:11.5px}
 .hidden{display:none!important}
 /* نقاط التنقل بين الأماكن (الجولة 3D) */
-.hs.nav .arrow{width:56px;height:56px;border-radius:50%;background:var(--gold);color:#141414;font-size:28px;
-  display:flex;align-items:center;justify-content:center;font-weight:900;
-  box-shadow:0 0 0 7px rgba(217,180,91,.28),0 6px 20px #000a;animation:hsPulse 2s infinite}
+.hs.nav .arrow{width:46px;height:46px;border-radius:50%;border:5px solid #f5822a;color:#fff;font-size:17px;
+  font-weight:900;display:flex;align-items:center;justify-content:center;background:#0006;
+  box-shadow:0 0 0 4px rgba(245,130,42,.35),0 4px 14px #000a;animation:hsPulse 2s infinite;text-shadow:0 1px 3px #000}
 .hs.nav .lbl{font-size:12.5px}
 #partsBar .nodebtn{border-color:var(--gold);color:var(--gold2);background:#22183a;font-weight:700}
 #partsBar .nodebtn.on{background:var(--gold);color:#141414}
 #nodeFade{position:absolute;inset:0;background:#000;opacity:0;transition:opacity .26s;pointer-events:none;z-index:40}
+/* عصا التحكم (المشي) */
+#walkPad{position:absolute;bottom:66px;inset-inline-end:18px;width:150px;height:150px;z-index:30;direction:ltr}
+#walkPad .wp{position:absolute;width:50px;height:50px;border-radius:14px;border:1px solid var(--gold);
+  background:#0c1424cc;color:var(--gold2);font-size:20px;cursor:pointer;user-select:none;touch-action:none}
+#walkPad .wp:active{background:var(--gold);color:#141414}
+#walkPad .fwd{top:0;left:50px}
+#walkPad .back{bottom:0;left:50px}
+#walkPad .left{top:50px;left:0}
+#walkPad .right{top:50px;left:100px}
+#miniMap{position:absolute;left:16px;top:92px;background:#0c1424e0;border:1px solid var(--line);
+  border-radius:14px;padding:10px 12px;z-index:29;max-width:200px}
+#miniMap h5{margin:0 0 8px;font-size:11.5px;color:var(--gold2)}
+#miniMap .mm-row{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+#miniMap .mm-dot{width:27px;height:27px;border-radius:50%;border:3px solid #f5822a;color:#fff;font-size:12.5px;
+  font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#0007}
+#miniMap .mm-dot.on{background:#f5822a;box-shadow:0 0 10px #f5822a}
+#miniMap .mm-line{width:12px;height:2px;background:#f5822a77}
+#panoCtl{position:absolute;bottom:74px;inset-inline-start:16px;display:flex;flex-direction:column;gap:8px;z-index:30}
+#panoCtl button{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:#0c1424d9;
+  color:var(--gold2);font-size:19px;cursor:pointer;font-family:inherit;transition:all .15s}
+#panoCtl button:hover{border-color:var(--gold);background:#1b2c52}
+#panoCtl button.on{background:var(--gold);color:#141414;border-color:var(--gold)}
 
 /* نافذة فيديو المقدمة */
 #videoModal{position:fixed;inset:0;background:#000;z-index:1550;display:none}
@@ -166,6 +187,34 @@ main{flex:1;display:flex;min-height:0}
 #embedModal{position:fixed;inset:0;background:#000;z-index:1600;display:none}
 #embedModal.open{display:block}
 #embedModal iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+/* طبقة تحميل الجولة الحقيقية + بدائل الخطأ */
+#embedAltBtn{background:#1a1030;color:var(--gold2);border:1px solid var(--gold);border-radius:10px;padding:7px 13px;font-weight:800;font-size:12.5px;cursor:pointer;white-space:nowrap}
+#embedAltBtn.hidden{display:none}
+#embedLoading{position:absolute;inset:0;z-index:15;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:#0a0f1c center/cover no-repeat}
+#embedLoading.hidden{display:none}
+#embedLoading .spin{width:52px;height:52px;border-radius:50%;border:5px solid #ffffff22;border-top-color:var(--gold);animation:embSpin 1s linear infinite}
+@keyframes embSpin{to{transform:rotate(360deg)}}
+#embedLoadName{color:#ffe9b8;font-weight:800;font-size:15px;background:#000a;padding:7px 16px;border-radius:12px;max-width:88%;text-align:center}
+#embedLoadErr{background:#1a1030ee;border:1px solid var(--line);border-radius:14px;padding:14px 18px;text-align:center;max-width:430px}
+#embedLoadErr p{margin:0 0 10px;color:#ffd9d9;font-size:13.5px}
+#embedLoadErr .err-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+#embedLoadErr button,#embedLoadErr a{background:var(--gold);color:#141414;border:0;border-radius:10px;padding:9px 16px;font-weight:800;font-size:13.5px;cursor:pointer;text-decoration:none}
+#embedLoadErr a{background:transparent;border:1px solid var(--gold);color:var(--gold2)}
+#tourTips{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);z-index:16;background:#0c1424ee;border:1px solid var(--line);
+  border-radius:12px;padding:8px 12px;font-size:12.5px;color:#cdd8ef;max-width:92%;display:flex;gap:10px;align-items:center}
+#tourTips.hidden{display:none}
+#tourTips button{background:none;border:0;color:#8fa3c8;font-size:15px;cursor:pointer;flex-shrink:0}
+/* شريط محطات المشي الحقيقي */
+#stopBar{position:absolute;top:64px;left:50%;transform:translateX(-50%);z-index:20;
+  background:#0c1424e6;border:1px solid var(--line);border-radius:16px;padding:10px 16px;
+  display:flex;align-items:center;gap:9px;max-width:92%}
+#stopBar.hidden{display:none}
+#stopBar .sb-dot{width:34px;height:34px;border-radius:50%;border:3px solid #f5822a;color:#fff;font-size:14px;
+  font-weight:800;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#0007;flex-shrink:0}
+#stopBar .sb-dot.on{background:#f5822a;box-shadow:0 0 12px #f5822a}
+#stopBar .sb-line{width:14px;height:2px;background:#f5822a77;flex-shrink:0}
+#stopBar .sb-lbl{font-size:13.5px;color:#ffe9b8;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px}
 .embed-note{position:absolute;bottom:0;inset-inline:0;background:#000c;color:#aab6d3;font-size:11px;
   text-align:center;padding:6px 10px;z-index:20}
 #partsBar{position:absolute;bottom:0;inset-inline:0;display:flex;gap:8px;overflow-x:auto;padding:12px 14px;
@@ -214,9 +263,23 @@ main{flex:1;display:flex;min-height:0}
     <h3 id="panoTitle"></h3>
     <button id="panoClose">✕ إغلاق الجولة</button>
   </div>
-  <div class="pano-hint">اسحب للدوران 360° &nbsp;•&nbsp; عجلة الفأرة للتقريب &nbsp;•&nbsp; اضغط النقاط الذهبية لمعرفة الأجزاء</div>
+  <div class="pano-hint">🎮 ▲ ▶ امشي قدام &nbsp;•&nbsp; ▼ امشي لورا &nbsp;•&nbsp; ◀ لِفّ بعينك &nbsp;•&nbsp; (أو استخدم أسهم الكيبورد / WASD) &nbsp;•&nbsp; الحلقات البرتقالية = امشِ هناك &nbsp;•&nbsp; الخريطة الصغيرة للقفز السريع</div>
+  <div id="panoCtl">
+    <button id="ctlZoomIn" title="تقريب">＋</button>
+    <button id="ctlZoomOut" title="تبعيد">−</button>
+    <button id="ctlAuto" class="on" title="دوران تلقائي">⟳</button>
+    <button id="ctlReset" title="إعادة الكاميرا">⌖</button>
+    <button id="ctlFull" title="ملء الشاشة">⛶</button>
+  </div>
   <div id="hsCard" class="hidden"><h4></h4><p></p><button id="hsCardClose">إغلاق</button></div>
+  <div id="walkPad">
+    <button class="wp fwd" data-a="fwd" title="امشي قدام">▲</button>
+    <button class="wp left" data-a="left" title="لف شمال">◀</button>
+    <button class="wp back" data-a="back" title="ارجع خطوة">▼</button>
+    <button class="wp right" data-a="right" title="امشي قدام">▶</button>
+  </div>
   <div id="partsBar"></div>
+  <div id="miniMap" class="hidden"></div>
 </div>
 
 <!-- نافذة فيديو المقدمة السينمائية -->
@@ -232,11 +295,25 @@ main{flex:1;display:flex;min-height:0}
 <!-- نافذة الجولة الحقيقية (Matterport) -->
 <div id="embedModal">
   <iframe id="embedFrame" title="جولة 360 حقيقية" allowfullscreen allow="xr-spatial-tracking; accelerometer; gyroscope; fullscreen; autoplay" referrerpolicy="no-referrer"></iframe>
+  <div id="embedLoading">
+    <div class="spin"></div>
+    <div id="embedLoadName"></div>
+    <div id="embedLoadErr" class="hidden">
+      <p>الجولة بتاخد وقت أطول من المعتاد، أو خدمة المزوّد مش متاحة حاليًا.</p>
+      <div class="err-btns">
+        <button id="embedRetry">🔄 إعادة المحاولة</button>
+        <a id="embedNewTab" target="_blank" rel="noopener">↗ فتح في تبويب جديد</a>
+      </div>
+    </div>
+  </div>
+  <div id="tourTips" class="hidden"><span id="tourTipsTxt"></span><button id="tourTipsX" title="إخفاء">✕</button></div>
   <div class="pano-top">
     <h3 id="embedTitle"></h3>
+    <button id="embedAltBtn" class="hidden" title="لو الجولة مش بتفتح من المزوّد الأساسي">↻ المصدر البديل</button>
     <button id="embedClose">✕ إغلاق الجولة</button>
   </div>
   <div class="embed-note" id="embedNote"></div>
+  <div id="stopBar" class="hidden"></div>
 </div>
 
 <script src="vendor/leaflet.js"></script>
@@ -251,6 +328,8 @@ const TYPE_META={
     svg:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2 23 21H1L12 2zm0 4.2L5.2 18.6h2.1L12 10l4.7 8.6h2.1L12 6.2z"/></svg>'},
   tomb:{label:'مقبرة',    color:'#9d7bd8',
     svg:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 1.6c-4 0-7 3.1-7 7v10.9c0 .8.7 1.5 1.5 1.5h11c.8 0 1.5-.7 1.5-1.5V8.6c0-3.9-3-7-7-7zm-3.7 6.9a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8zm7.4 0a1.4 1.4 0 1 1 0 2.8 1.4 1.4 0 0 1 0-2.8zM12 11l2.3 3.4h-4.6L12 11zm-4 4.6h8v1.7H8v-1.7z"/></svg>'},
+  museum  :{label:'متحف',   color:'#d4af37',
+    svg:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M22 22H2v-2h20v2zM2 9h20v2H2V9zm10-8 10 6H2L12 1zM4 13h2v6H4v-6zm7 0h2v6h-2v-6zm7 0h2v6h-2v-6z"/></svg>'},
   obelisk:{label:'مسلة',  color:'#5bb8d4',
     svg:'<svg viewBox="0 0 24 24" fill="#fff"><path d="M10.4 1h3.2l.9 3.4-1 15.1H16L12 23l-4-3.5h2.5l-1-15.1L10.4 1z"/></svg>'}
 };
@@ -262,7 +341,7 @@ const SITES=[
  nodes:[{img:'assets/pano/giza.jpg',label:'بين الأهرامات وأبو الهول'},{img:'assets/pano/giza_base.jpg',label:'عند قاعدة الهرم الأكبر'},{img:'assets/pano/giza_sphinx.jpg',label:'أمام أبو الهول'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/the-sphinx-and-the-pyramids',
- tourLabel:'🌐 بانوراما حقيقية: أبو الهول والأهرامات (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: أبو الهول والأهرامات (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Flavio Di Mattia عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  extLink:'https://www.gizapyramids.org/static/html/visualsearch_split.jsp',
  extLabel:'🗺️ أرشيف الجيزة QTVR — متحف بوسطن (1200 بانوراما)',
@@ -279,14 +358,38 @@ const SITES=[
   {name:'أبو الهول',hp:[180,4],desc:'تمثال بطول 73 متراً منحوت من كتلة واحدة؛ برأس ملك (يُعتقد خفرع) وجسد أسد، وأمامه «لوحة الحلم» للملك تحتمس الرابع.'},
   {name:'معبد الوادي',hp:[120,-8],desc:'معبد خفرع الجرانيتي الذي كانت تُطهَّر عنده جثامين الملوك قبل التحنيط، ويتصل بالهرم بطريق مغطى.'}]},
 
+{id:'meresankh',name:'مقبرة الملكة ميريس عنخ الثالث — الجيزة',type:'tomb',lat:29.9732,lng:31.1350,zoom:15,
+ era:'الدولة القديمة — الأسرة 4 (نحو 2570 ق.م)',builder:'ميريس عنخ: حفيدة خوفو وزوجة خفرع',
+ photo:'assets/img/meresankh.jpg',audio:'assets/audio/meresankh.mp3',pano:'assets/pano/meresankh_hall.jpg',
+ panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
+ nodes:[{img:'assets/pano/meresankh_hall.jpg',label:'البهو العظيم'},{img:'assets/pano/meresankh_court.jpg',label:'مدخل الصخر الجبلي'},{img:'assets/pano/meresankh_hathor.jpg',label:'مصلى حتحور'}],
+ tour:'https://my.matterport.com/show/?m=d42fuVA21To',
+ tourAlt:'https://mpembed.com/show/?m=d42fuVA21To&mpu=497',
+ tourLabel:'🌐 جولة حقيقية: داخل مقبرة الملكة نفرتاري (Matterport 3D)',
+ tourCredit:'جولة 360° حقيقية: مسح Matterport منشور ضمن مشروع التراث الجيزي — تُعرض عبر المشغّل الرسمي وحقوق المسح لمالكه',
+ desc:'أجمل مقابر الجيزة وأكثرها زخرفة: منحوتة في صخر الجبل الشرقي للهضبة لصالح ميريس عنخ الثالث، حفيدة خوفو وزوجة خفرع؛ بهوها المحفور، وجدارياتها الملونة الزاهية، ومحراب تماثيلها النادر، وحجرة حتحور المقدسة — اكتشفها ريسنر عام 1927 وما زالت تُدهش زوارها.',
+ events:[
+  'نحو 2570 ق.م: نحت المقبرة في المقبرة الشرقية للهضبة.',
+  '1927: الاكتشاف على يد بعثة جامعة هارفارد-بوسطن بقيادة ريسنر.',
+  'القرن 20: نقل تابوتها الجرانيتي الأسود إلى المتحف المصري.',
+  'اليوم: مسح Matterport حقيقي يتيح المشي داخلها من أي مكان في العالم.'],
+ parts:[
+  {name:'المدخل المنحوت',desc:'درج وممر يخترق الصخر نحو بهو المقبرة في قلب الجبل.'},
+  {name:'البهو المحفور',hp:[0,-4],desc:'قاعة رئيسية بجدرانها الجداريات الملونة لمشاهد القرابين والتفاني.'},
+  {name:'محراب التماثيل',hp:[65,-3],desc:'اكمة نادرة من التماثيل الملكية والأسرية الموضوعة في أعمق جدار.'},
+  {name:'حجرة حتحور',hp:[-85,-3],desc:'مصلى جانبي للإلهة حتحور بجانبه ترسانة نقوش من الدولة القديمة.'},
+  {name:'المصلى العلوي',desc:'غرف القرابين العلوية بجدارية الملاكمة والصيد الشهيرة.'}]},
 {id:'saqqara',name:'سقارة — هرم زوسر المدرج',type:'pyramid',lat:29.8713,lng:31.2166,zoom:14,
  era:'الأسرة الثالثة (نحو 2650 ق.م)',builder:'الملك زوسر — تصميم إمحوتب',
  photo:'assets/img/saqqara.jpg',audio:'assets/audio/saqqara.mp3',pano:'assets/pano/saqqara.jpg',
  nodes:[{img:'assets/pano/saqqara.jpg',label:'مجمع هرم زوسر'},{img:'assets/pano/saqqara_col.jpg',label:'بهو المدخل المسقوف'},{img:'assets/pano/saqqara_base.jpg',label:'عند قاعدة الهرم'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/saqqra-temple-and-step-pyramid-of-djoser',
- tourLabel:'🌐 بانوراما حقيقية: مجمع هرم زوسر (360Cities)',
- tourCredit:'بانوراما 360° حقيقية: تصوير Salma ElDardiry عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري',
+ stops:[
+  {src:'https://www.360cities.net/embed_iframe/saqqra-temple-and-step-pyramid-of-djoser',label:'مجمع زوسر الهرمي — بانوراما 360° حقيقية'},
+  {src:'https://my.matterport.com/show/?m=xmDbt2rfa82',alt:'https://mpembed.com/show/?m=xmDbt2rfa82&mpu=497',label:'مقبرة ميحو الملوّنة — مسح Matterport ثلاثي الأبعاد، تجوّل بحرية'}],
+ tourLabel:'🌐 جولة حقيقية: داخل مجمع هرم زوسر (بانوراما 360° — 360Cities)',
+ tourCredit:'بانوراما 360° حقيقية: تصوير Salma ElDardiry عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري • محطة مقبرة ميحو: مسح Matterport حقوقه لمالكه • عرض تعليمي غير تجاري',
  desc:'مقبرة منف العظيمة وأقدم موقع هرمي في مصر: هرم زوسر المدرج أول بناء حجري ضخم في التاريخ بتصميم المهندس إمحوتب، وإليها تعود نصوص الأهرامات وسراديب ثور أبيس المقدس.',
  events:[
   'نحو 2650 ق.م: إمحوتب يصمم أول هرم حجري في التاريخ.',
@@ -306,7 +409,7 @@ const SITES=[
  nodes:[{img:'assets/pano/karnak.jpg',label:'صالة الأعمدة الكبرى'},{img:'assets/pano/karnak_court.jpg',label:'الفناء الأول'},{img:'assets/pano/karnak_deep.jpg',label:'عمق المعبد والمسلات'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/karnakhypostyle',
- tourLabel:'🌐 بانوراما حقيقية: داخل صالة الأعمدة الكبرى (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: داخل صالة الأعمدة الكبرى (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير William Hamblin عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'أكبر مجمّع ديني بناه الإنسان: مقر ثالوث طيبة آمون-رع وموت وخونسو على الضفة الشرقية للأقصر؛ صالة الأعمدة الكبرى بمئة وأربعة وثلاثين عموداً، ومسلات جرانيتية عظيمة، وبحيرة مقدسة، وشارع الكباش.',
  events:[
@@ -328,7 +431,7 @@ const SITES=[
  nodes:[{img:'assets/pano/luxor.jpg',label:'فناء أمنحتب الثالث'},{img:'assets/pano/luxor_col.jpg',label:'ممر الأعمدة الكبير'},{img:'assets/pano/luxor_court.jpg',label:'فناء رمسيس الثاني'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/luxor-temple-courtyard-of-amenhotep-iii-luxor-amp-karnak',
- tourLabel:'🌐 بانوراما حقيقية: فناء أمنحتب الثالث (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: داخل فناء أمنحتب الثالث (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Ruediger Kottmann عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'«الحرملك الجنوبي لآمون»: بناه أمنحتب الثالث ووسّعه رمسيس الثاني بالبوابة العظيمة والمسلتين؛ كان مقر عيد أوبت، وفيه تتناوب ثلاث طبقات من التاريخ: الفرعونية والرومانية والإسلامية (مسجد أبو الحجاج).',
  events:[
@@ -349,7 +452,7 @@ const SITES=[
  nodes:[{img:'assets/pano/hatshepsut.jpg',label:'الشرفة العليا'},{img:'assets/pano/deir_low.jpg',label:'الأدرج والشرفة الأولى'},{img:'assets/pano/deir_hathor.jpg',label:'بهو حتحور'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/mortuary-temple-of-hatshepsut',
- tourLabel:'🌐 بانوراما حقيقية: معبد حتشبسوت (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: داخل معبد حتشبسوت (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Mohamed Attef عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'معبد «جسرو جسرو» الأعظم: ثلاث شرفات تتصاعد نحو الجرف الصخري بتصميم المعماري سنموت؛ وجدرانه تحكي رحلة بلاد بونت وأسطورة الولادة الإلهية للملكة حتشبسوت.',
  events:[
@@ -365,12 +468,38 @@ const SITES=[
   {name:'نقوش رحلة بونت',desc:'جدارية السفن المتجهة إلى بلاد البخور: ملكة بونت ومنازلها على أعمدة وأشجار البخور الحية.'},
   {name:'بهو أنوبيس',desc:'غرف الإله أنوبيس حامي التحنيط، بنقوش ملونة بحالة استثنائية.'}]},
 
+{id:'dendera',name:'معبد دندرة (معبد حتحور)',type:'temple',lat:26.1426,lng:32.6514,zoom:15,
+ era:'البطلمي — الروماني (القرن 1 ق.م)',builder:'بطليموس الثاني عشر وما بعده',
+ photo:'assets/img/dendera.jpg',audio:'assets/audio/dendera.mp3',pano:'assets/pano/dendera.jpg',
+ panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
+ nodes:[{img:'assets/pano/dendera.jpg',label:'بحونة حتحور العظيمة'},{img:'assets/pano/dendera_facade.jpg',label:'المدخل والمحيط الخارجي'},{img:'assets/pano/dendera_roof.jpg',label:'سطح المعبد ومصلى أوزوريس'}],
+ tour:'https://www.360cities.net/embed_iframe/sanctuary-of-hathor-dendera-temple-complex-egypt',
+ stops:[
+  {src:'https://www.360cities.net/embed_iframe/sanctuary-of-hathor-dendera-temple-complex-egypt',label:'قدس أقداس حتحور — بانوراما حقيقية'},
+  {src:'https://www.360cities.net/embed_iframe/dendera-temple-of-hathor',label:'واجهة المعبد والمحيط — بانوراما 360° حقيقية (تصوير Stephen Dyer)'}],
+ tourLabel:'🌐 جولة حقيقية: داخل قدس أقداس حتحور (بانوراما 360° — 360Cities)',
+ tourCredit:'بانوراما 360° حقيقية: تصوير Mohamed Attef عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري • محطة الواجهة: تصوير Stephen Dyer عبر 360Cities • عرض تعليمي غير تجاري',
+ extLink:'https://www.360cities.net/image/dendera-temple-of-hathor',
+ extLabel:'🗺️ بانوراما إضافية: واجهة المعبد (تصوير Stephen Dyer)',
+ desc:'أجمل ما تبقى من معابد مصر القديمة مرسوماً ومصبوغاً: معبد الإلهة حتحور سيدة السماء والفرح؛ بحونة أعمدة تتوّجها أوجه الإلهة الأربعة، وسقف فلكي بألوان باقية يروي دورة الشمس عند الإلهة نوت وأشرطة الأبراج، وسطح به مصلى أوزوريس البروجي — وقد حفظته الرمال التي دفنته قروناً طويلة.',
+ events:[
+  'القرن 1 ق.م: البطالمة يشيّدون المعبد، ويكمله الرومان بالزخارف.',
+  '1820: برج السقف المنتصر بالأبراج يُنقل إلى متحف اللوفر بباريس.',
+  'القرن 20: إزالة السخاف المتراكمة تكشف ألوان المعبد الباهرة.',
+  'اليوم: أفضل معبد محفوظ في مصر — وبانوراما حقيقية من قدس أقداسه.'],
+ parts:[
+  {name:'بحونة حتحور',hp:[0,-3],desc:'18 عموداً يتوّج كل منها أربعة أوجه محفورة للإلهة، والظلام المقدس يعانق ضوء الفتحات العلوية.'},
+  {name:'سقف نوت الفلكي',hp:[150,48],desc:'الإلهة نوت تبتلع قرص الشمس مساءً وتلده فجراً، بين أشرطة الأبراج والكواكب بألوانه الباقية.'},
+  {name:'مصلى أوزوريس على السطح',hp:[-100,4],desc:'حجرة السطح التي احتضنت أشهر سقف منتصر بالأبراج في التاريخ — نسخته بديلة في مكانها اليوم.'},
+  {name:'سراديب ومصابيح دندرة',desc:'القبو السري بنقوشه المشهورة («مصابيح دندرة») — رموز لعبادة الخصوبة والبعث في القراءات الأثرية.'},
+  {name:'سلم الملوك الحلزوني',desc:'درج لولبي ضيق داخل سماكة الجدار كان الكهنة يصعدونه بالمركب المقدس إلى السطح في عيد الأنقلاب.'}]},
 {id:'edfu',name:'معبد إدفو (معبد حورس)',type:'temple',lat:24.9779,lng:32.8724,zoom:15,
  era:'العصر البطلمي (237–57 ق.م)',builder:'بطليموس الثالث حتى الثاني عشر',
  photo:'assets/img/edfu.webp',audio:'assets/audio/edfu.mp3',pano:'assets/pano/edfu.jpg',
+ nodes:[{img:'assets/pano/edfu.jpg',label:'الفناء المكشوف'},{img:'assets/pano/edfu_court.jpg',label:'وسط الفناء'},{img:'assets/pano/edfu_hall.jpg',label:'بهو الأعمدة الداخلي'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/the-temple-of-horus-at-edfu',
- tourLabel:'🌐 بانوراما حقيقية: معبد حورس بإدفو (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: داخل معبد حورس بإدفو (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Mohamed Attef عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'معبد حورس: أكبر معبد مصري محفوظ بعد الكرنك؛ بناه البطالمة في 180 عاماً، وأنقذه مارييت من الرمال عام 1860، وعلى جدرانه «نص النصر» — أطول نص أسطوري متصل في مصر.',
  events:[
@@ -388,9 +517,10 @@ const SITES=[
 {id:'komombo',name:'معبد كوم أمبو المزدوج',type:'temple',lat:24.4512,lng:32.9374,zoom:15,
  era:'البطلمي — الروماني (نحو 180 ق.م وما بعده)',builder:'بطليموس السادس وملوك لاحقون',
  photo:'assets/img/komombo.jpg',audio:'assets/audio/komombo.mp3',pano:'assets/pano/komombo.jpg',
+ nodes:[{img:'assets/pano/komombo.jpg',label:'القاعة الكبرى'},{img:'assets/pano/komombo_court.jpg',label:'الفناء الخارجي والنيل'},{img:'assets/pano/komombo_hall.jpg',label:'قلب المعبد المزدوج'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/temple-of-kom-ombo-double-entrance-egypt',
- tourLabel:'🌐 بانوراما حقيقية: المدخل المزدوج (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: داخل المدخل المزدوج لكوم أمبو (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Mohamed Attef عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'المعبد المزدوج الوحيد: نصف لحور العتيق ونصف لسوبك التمساح، بتناظر معماري كامل لا نظير له؛ وعلى جدرانه أقدم لوحة أدوات جراحية منقوشة، وإليه بئر المقياس النيلي.',
  events:[
@@ -409,9 +539,10 @@ const SITES=[
 {id:'philae',name:'معبد فيلة (معبد إيزيس)',type:'temple',lat:24.0251,lng:32.8794,zoom:15,
  era:'البطلمي — الروماني (القرن 3 ق.م — القرن 6 م)',builder:'بطليموس الثاني وما بعده',
  photo:'assets/img/philae.jpg',audio:'assets/audio/philae.mp3',pano:'assets/pano/philae.jpg',
+ nodes:[{img:'assets/pano/philae.jpg',label:'الفناء الأول'},{img:'assets/pano/philae_col.jpg',label:'بهو الأعمدة الغربي'},{img:'assets/pano/philae_kiosk.jpg',label:'كشك عر الطرابلة'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/temple-of-isis-philae-holy-of-holies',
- tourLabel:'🌐 بانوراما حقيقية: قدس أقداس فيلة (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: داخل قدس أقداس فيلة (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Salma ElDardiry عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'جزيرة إيزيس المقدسة في منقلة الأسوان: معابد بطلمية ورومانية كالمسرح العائم على النيل؛ آخر معاقل الديانة المصرية، نُقلت بالكامل إلى جزيرة أجيليكيا في أعظم عملية إنقاذ أثري في التاريخ.',
  events:[
@@ -429,9 +560,10 @@ const SITES=[
 {id:'obelisk',name:'المسلة الناقصة — أسوان',type:'obelisk',lat:24.0524,lng:32.8829,zoom:15,
  era:'الدولة الحديثة (القرن 15 ق.م — يُرجح)',builder:'يُنسب إلى عهد حتشبسوت',
  photo:'assets/img/obelisk.jpg',audio:'assets/audio/obelisk.mp3',pano:'assets/pano/obelisk.jpg',
+ nodes:[{img:'assets/pano/obelisk.jpg',label:'المسلة من المساحة الرئيسية'},{img:'assets/pano/obelisk_head.jpg',label:'عند رأس المسلة'},{img:'assets/pano/obelisk_quarry.jpg',label:'أعماق المحجر'}],
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
  tour:'https://www.360cities.net/embed_iframe/the-unfinished-obelisk-aswan-egypt-aswan-nile-river',
- tourLabel:'🌐 بانوراما حقيقية: المسلة الناقصة (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: عند المسلة الناقصة (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري وحقوق البانوراما لمصورها',
  desc:'أضخم مسلة حاول المصريون نحتها: 42 متراً و1200 طن في جرانين أسوان الوردي؛ تركتها الشقوق نصف منحوتة في المحجر، فصارت أصدق مدرسة مفتوحة لفهم صناعة المسلات العظيمة.',
  events:[
@@ -448,9 +580,13 @@ const SITES=[
 
 {id:'ramses6',name:'مقبرة رمسيس السادس — وادي الملوك',type:'tomb',lat:25.7402,lng:32.6014,zoom:15,
  era:'الدولة الحديثة — الأسرة 20 (نحو 1141 ق.م)',builder:'رمسيس الخامس ورمسيس السادس (رقم KV9)',
- photo:'assets/img/ramses6.jpg',audio:'assets/audio/ramses6.mp3',
+ photo:'assets/img/ramses6.jpg',audio:'assets/audio/ramses6.mp3',pano:'assets/pano/ramses6_desc.jpg',
+ panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
+ nodes:[{img:'assets/pano/ramses6_desc.jpg',label:'الممر الهابط'},{img:'assets/pano/ramses6_pillar.jpg',label:'بهو الأعمدة الأربعة'}],
+ extLink:'https://describingegypt.com/tours/ramessesvi',
+ extLabel:'🗺️ الجولة الكاملة داخل المقبرة (Describing Egypt)',
  tour:'https://www.360cities.net/embed_iframe/ramessesvi-burial-ch-01',
- tourLabel:'🌐 بانوراما حقيقية: جوا غرفة الدفن (360Cities)',
+ tourLabel:'🌐 جولة حقيقية: جوا غرفة الدفن (بانوراما 360° — 360Cities)',
  tourCredit:'بانوراما 360° حقيقية: تصوير Salma ElDardiry عبر منصة 360Cities — تضمين مجاني للاستخدام غير التجاري',
  desc:'جوهرة وادي الملوك وأشهر مقابره زيارةً: محورها 117 متراً منحوت في الجبل، وجدرانها تتعاقب عليها نصوص العالم السفلي، وسقف غرفة دفنها تحفة الإلهة نوت ممدودة على سماء الليل والنهار بألوان باقية منذ 3000 عام — ظلت مفتوحة منذ العصور القديمة.',
  events:[
@@ -466,7 +602,13 @@ const SITES=[
   {name:'سقف الإلهة نوت الفلكي',desc:'تحفة المقبرة الأشهر: نوت ممدودة على كتاب الليل والنهار محاطة بالنجوم — شاهدها في البانوراما الحقيقية.'}]},
 {id:'menna',name:'مقبرة منّا — البر الغربي بالأقصر',type:'tomb',lat:25.7246,lng:32.6060,zoom:15,
  era:'الدولة الحديثة — الأسرة 18 (نحو 1400 ق.م)',builder:'منّا، كاتب حصر أراضي آمون (رقم TT69)',
- photo:'assets/img/menna.jpg',audio:'assets/audio/menna.mp3',
+ photo:'assets/img/menna.jpg',audio:'assets/audio/menna.mp3',pano:'assets/pano/menna_hall.jpg',
+ panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
+ nodes:[{img:'assets/pano/menna_hall.jpg',label:'قاعة الجداريات'},{img:'assets/pano/menna_court.jpg',label:'صحن المدخل المنحوت'},{img:'assets/pano/menna_deep.jpg',label:'جدارية الصيد الشهيرة'}],
+ tour:'https://my.matterport.com/show/?m=vLYoS66CWpk',
+ tourAlt:'https://mpembed.com/show/?m=vLYoS66CWpk&mpu=497',
+ tourLabel:'🌐 جولة حقيقية: داخل مقبرة منّا (Matterport 3D)',
+ tourCredit:'جولة 360° حقيقية: مسح Matterport منشور عبر منصة العرض mpembed — حقوق المسح لمالكه',
  desc:'من أجمل مقابر النبلاء في جبانة شيخ عبد القرنة: منّا كان كاتباً لحصر أراضي آمون في عهد تحتمس الرابع، وجدران مقبرته تحمل أجمل لوحات الحياة اليومية: الحصاد والزراعة، والصيد في المستنقعات، ومواكب الحامين — لوحة موسوعية عن حياة المصري العادي قبل 3400 عام.',
  events:[
   'نحو 1400 ق.م: نحت المقبرة وتزيينها لكاتب الدواوين منّا.',
@@ -475,17 +617,22 @@ const SITES=[
   'اليوم: مسح ضوئي ثلاثي الأبعاد يتيح زيارتها افتراضياً من أي مكان في العالم.'],
  parts:[
   {name:'ممر المدخل',desc:'ممر منحوت يؤدي إلى بهو عريض، على جدرانه مشاهد البركة والحدائق ومواسم الحقل.'},
-  {name:'مشاهد الحصاد',desc:'لوحة موسوعية لمواسم الزراعة: المحارثون والحصاد ودق الغلال وتسجيلها على يد الكتبة — مهنة منّا نفسه.'},
-  {name:'مشهد الصيد والقنص',desc:'منّا واقفاً على قارب ورق البردي يرمي بسهمه المزدوج في طيور المستنقعات، ومعه زوجته وابناه بملابس الاحتفال.'},
+  {name:'مشاهد الحصاد',hp:[-70,-4],desc:'لوحة موسوعية لمواسم الزراعة: المحارثون والحصاد ودق الغلال وتسجيلها على يد الكتبة — مهنة منّا نفسه.'},
+  {name:'مشهد الصيد والقنص',hp:[80,-4],desc:'منّا واقفاً على قارب ورق البردي يرمي بسهمه المزدوج في طيور المستنقعات، ومعه زوجته وابناه بملابس الاحتفال.'},
   {name:'مواكب الحامين',desc:'زائرون يقدمون الطعام والشراب في مشاهد احتفالية — بورتريهات نادرة لعامة الناس في مصر القديمة.'},
   {name:'المقصورة',desc:'غرفة دفن منّا وزوجته، منقوش عليها نصوص الخروج من النهار لضمان البقاء في الآخرة.'}]},
 {id:'abusimbel',name:'أبو سمبل (رمسيس الثاني)',type:'temple',lat:22.3372,lng:31.6257,zoom:15,
  era:'الدولة الحديثة (نحو 1264 ق.م)',builder:'رمسيس الثاني',
  photo:'assets/img/abusimbel.webp',audio:'assets/audio/abusimbel.mp3',pano:'assets/pano/abusimbel.jpg',
  panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
- tour:'https://mpembed.com/show/?m=sgMWWDvdKsV&mpu=497',
- tourLabel:'🌐 جولة حقيقية: داخل معبد أبو سمبل (Matterport 3D)',
- tourCredit:'جولة 360° حقيقية: مسح Matterport منشور عبر منصة العرض mpembed — حقوق المسح لمالكه',
+ nodes:[{img:'assets/pano/abusimbel.jpg',label:'القاعة الكبرى'},{img:'assets/pano/abusimbel_facadesm.jpg',label:'معبد نفرتاري'},{img:'assets/pano/abusimbel_sanc.jpg',label:'قدس الأقداس'}],
+ tour:'https://my.matterport.com/show/?m=sgMWWDvdKsV',
+ tourAlt:'https://mpembed.com/show/?m=sgMWWDvdKsV&mpu=497',
+ stops:[
+  {src:'https://my.matterport.com/show/?m=sgMWWDvdKsV',alt:'https://mpembed.com/show/?m=sgMWWDvdKsV&mpu=497',label:'المعبد الكبير — مسح Matterport ثلاثي الأبعاد، تجوّل بحرية'},
+  {src:'https://www.360cities.net/embed_iframe/the-small-temple-of-nefertari-entrance-at-abu-simbel-lake-nasser',label:'معبد نفرتاري — المدخل عند بحيرة ناصر، بانوراما 360° حقيقية'}],
+ tourLabel:'🌐 جولة حقيقية: داخل معبد أبو سمبل — محطتان (Matterport 3D)',
+ tourCredit:'جولة 360° حقيقية: مسح Matterport منشور عبر منصة العرض mpembed — حقوق المسح لمالكه • محطة نفرتاري: بانوراما 360Cities حقيقية للمدخل • عرض تعليمي غير تجاري',
  desc:'صرحا رمسيس الثاني المنحوت في الجبل عند حدود النوبة: أربعة تماثيل عظيمة، ونقوش ملونة لمعركة قادش، وظاهرة تعامد الشمس مرتين سنوياً، ومعبد نفرتاري المجاور — وإنقاذه بقيادة اليونسكو قبل غرق النوبة.',
  events:[
   'نحو 1264 ق.م: بدء نحت المعبد في جبل الجرانين على الضفة الغربية للنيل.',
@@ -497,13 +644,41 @@ const SITES=[
   {name:'القاعة الكبرى (بهو أوزور)',hp:[0,-3],desc:'ثمانية أعمدة أوزورية على هيئة الملك، وجدران ملونة تحكي معركة قادش ضد الحيثيين.'},
   {name:'القاعتان الجانبيتان',hp:[90,-5],desc:'غرف الشعائر والمخازن بنقوش القرابين، وعلى سقفها نسور الإلهة نوت والنجوم.'},
   {name:'قدس الأقداس',hp:[5,-8],desc:'أربعة تماثيل جالسة: بتاح وآمون ورمسيس المقدس ورع حور أختي؛ تصلها شمس التعامد مرتين سنوياً.'},
-  {name:'معبد نفرتاري',desc:'شرق المعبد الكبير: معبد حتحور-نفرتاري بست تماثيل متساوية للملك والملكة — تكريم نادر للمرأة الملكية.'}]}
+  {name:'معبد نفرتاري',desc:'شرق المعبد الكبير: معبد حتحور-نفرتاري بست تماثيل متساوية للملك والملكة — تكريم نادر للمرأة الملكية.'}]},
+ {id:'gem',name:'المتحف المصري الكبير',type:'museum',lat:29.9930,lng:31.1196,zoom:15,
+ era:'حاضرة: يحرس كنوز خمسة آلاف عام',builder:'تصميم Heneghan Peng',
+ photo:'assets/img/gem.jpg',audio:'assets/audio/gem.mp3',pano:'assets/pano/gem_exterior.jpg',
+ panoCredit:'بانوراما 360° مولدة بالذكاء الاصطناعي لأغراض العرض التعليمي (نسخة تفاعلية بنقاط الأجزاء)',
+ nodes:[{img:'assets/pano/gem_exterior.jpg',label:'الواجهة والأهرامات'},{img:'assets/pano/gem_stairs.jpg',label:'الدرج العظيم والتماثيل'},{img:'assets/pano/gem_tut.jpg',label:'قاعة كنوز توت عنخ آمون'}],
+ tour:'https://my.matterport.com/show/?m=zBpDdPqxTKz',
+ tourAlt:'https://mpembed.com/show/?m=zBpDdPqxTKz&mpu=497',
+ stops:[
+  {src:'https://www.360cities.net/embed_iframe/grand-egyptian-museum-1',label:'واجهة المتحف والأهرامات — بانوراما 360° حقيقية'},
+  {src:'https://my.matterport.com/show/?m=zBpDdPqxTKz',alt:'https://mpembed.com/show/?m=zBpDdPqxTKz&mpu=497',label:'قاعة توت عنخ آمون — مسح Matterport ثلاثي الأبعاد، تجوّل بحرية'},
+  {src:'https://my.matterport.com/show/?m=85n8j312Ur4',alt:'https://mpembed.com/show/?m=85n8j312Ur4&mpu=497',label:'قاعة كنز توت بالمتحف المصري بالتحرير — مسح Matterport (وزارة الآثار)'}],
+ tourLabel:'🌐 جولة حقيقية: امشِ جوا المتحف الكبير — ٣ محطات حقيقية',
+ tourCredit:'جولة Matterport ثلاثية الأبعاد داخل قاعة توت عنخ آمون — المتحف المصري الكبير — حقوق المسح لمالكه • محطة الواجهة: بانوراما 360Cities حقيقية • عرض تعليمي غير تجاري',
+ extLink:'https://www.360cities.net/image/grand-egyptian-museum-1',
+ extLabel:'🧭 بانوراما إضافية: المتحف المصري الكبير (360Cities)',
+ desc:'أكبر متحف في العالم مخصص لحضارة واحدة، عند بوابة الأهرامات بالجيزة. بواجهته الزجاجية المواجهة للأهرامات يحتضن أكثر من ١٠٠ ألف قطعة أثرية — وعلى رأسها كنوز توت عنخ آمون كاملة (~٥٠٠٠ قطعة) معروضة لأول مرة في مكان واحد منذ اكتشافها عام 1922، وفي قلبها القناع الذهبي.',
+ events:[
+  '2002: إطلاق مشروع المتحف الكبير واختيار موقعًا بجوار الأهرامات.',
+  '2012: وضع حجر الأساس بتصميم الاستوديو الإيرلندي Heneghan Peng.',
+  '2023: اكتمال المبنى وبدء الاستقبال التجريبي للزوار.',
+  '2025: الافتتاح الكامل — كنوز توت عنخ آمون تُعرض كاملة لأول مرة.'],
+ parts:[
+  {name:'الواجهة الزجاجية والأهرامات',hp:[10,2],desc:'واجهة زجاجية شاهقة مواجهة لأهرامات الجيزة مباشرة — المنظر الذي يجمع الماضي والحاضر في إطار واحد.'},
+  {name:'الدرج العظيم',hp:[-35,4],desc:'سلّم صاعد تصطف على جانبيه تماثيل الملوك والكهنة العظيمة — تمهيد مهيب لقاعات العرض.'},
+  {name:'قاعة كنوز توت عنخ آمون',hp:[80,0],desc:'~٥٠٠٠ قطعة من كنوز الملك الشاب معروضة كاملة لأول مرة: الذهب، العرش، المركبات، والتماثيل الجنائزية.'},
+  {name:'القناع الذهبي',hp:[150,6],desc:'قناع توت عنخ آمون من الذهب الخالص (~١١ كجم) — أشهر تحفة فنية في التاريخ البشري.'},
+  {name:'مئات آلاف القطع',hp:[-120,0],desc:'أكثر من ١٠٠ ألف قطعة أثرية تغطي ٥٠٠٠ عام من الحضارة المصرية — أكبر تجمع للآثار المصرية في العالم.'}]}
 ];
 
 /* =========================================================
    أدوات عامة
 ========================================================= */
 const $=s=>document.querySelector(s);
+const TOURMUSIC=new Audio('assets/audio/tour_music.mp3');TOURMUSIC.loop=true;TOURMUSIC.volume=0.32; /* 🎵 موسيقى الجولات الحقيقية — عامة لكل الجولات */
 function fmt(t){t=Math.max(0,t|0);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0');}
 
 /* =========================================================
@@ -581,9 +756,8 @@ function openSite(id,fly){
         <span id="audioTime">0:00</span>
       </div>
       <p class="desc">${s.desc}</p>
-      ${s.pano?'<button id="btn360" class="btn360">🧭 ادخل جولة 360° داخل الموقع</button>':''}
+      ${s.pano?'<button id="btn360" class="btn360">🚶 امشِ جوا الأثر — جولة 3D بالتحكم الكامل</button>':''}
       ${s.tour?`<button id="btnTour" class="btn360 btnReal">${s.tourLabel||'🌐 جولة 360° حقيقية'}</button>`:''}
-      ${s.extLink?`<a class="btn360 btnExt" href="${s.extLink}" target="_blank" rel="noopener">${s.extLabel}</a>`:''}
       ${s.panoCredit?`<div class="credit-inline">${s.panoCredit}</div>`:''}
       ${s.tourCredit?`<div class="credit-inline">${s.tourCredit}</div>`:''}
       <h3>⭐ أبرز الأحداث والتواريخ</h3>
@@ -685,7 +859,8 @@ filtersEl.innerHTML=`
   <label><input type="checkbox" checked data-type="temple"><span class="dot" style="background:${TYPE_META.temple.color}"></span>المعابد</label>
   <label><input type="checkbox" checked data-type="pyramid"><span class="dot" style="background:${TYPE_META.pyramid.color}"></span>الأهرامات</label>
   <label><input type="checkbox" checked data-type="obelisk"><span class="dot" style="background:${TYPE_META.obelisk.color}"></span>المسلات</label>
-  <label><input type="checkbox" checked data-type="tomb"><span class="dot" style="background:${TYPE_META.tomb.color}"></span>المقابر</label>`;
+  <label><input type="checkbox" checked data-type="tomb"><span class="dot" style="background:${TYPE_META.tomb.color}"></span>المقابر</label>
+  <label><input type="checkbox" checked data-type="museum"><span class="dot" style="background:${TYPE_META.museum.color}"></span>المتاحف</label>`;
 filtersEl.addEventListener('change',()=>{
   if(!map)return;
   document.querySelectorAll('#filters input').forEach(cb=>{
@@ -697,7 +872,14 @@ filtersEl.addEventListener('change',()=>{
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     if($('#videoModal').classList.contains('open')){V.onEnded=null;closeVideo();return;}
+    if($('#embedModal').classList.contains('open')){$('#embedClose').click();return;}
     closePano();
+    return;
+  }
+  /* 🎮 كيبورد الجولة الحقيقية: ↑ أو → = المحطة التالية • ↓ أو ← = السابقة */
+  if($('#embedModal').classList.contains('open')&&STOPS.length>1){
+    if(e.key==='ArrowUp'||e.key==='ArrowRight'){e.preventDefault();switchStop(stopIdx+1);}
+    else if(e.key==='ArrowDown'||e.key==='ArrowLeft'){e.preventDefault();switchStop(stopIdx-1);}
   }
 });
 
@@ -708,7 +890,7 @@ const Pano=(function(){
   const D2R=Math.PI/180;
   let canvas,layer,cardEl,gl= null,prog,loc,uCam,uAspect,uTanH,texObj,buf,vertCount=0;
   let raf=0,running=false,last=0,yaw=0,pitch=0,fov=75*D2R,tYaw=null,tPitch=null,interacted=false;
-  let hotspots=[],parts=[],ready=false;
+  let hotspots=[],parts=[],ready=false,auto=true,yawVel=0,fovTarget=null;
 
   function mul(A,B){const C=[[0,0,0],[0,0,0],[0,0,0]];
     for(let i=0;i<3;i++)for(let j=0;j<3;j++)C[i][j]=A[i][0]*B[0][j]+A[i][1]*B[1][j]+A[i][2]*B[2][j];return C;}
@@ -778,7 +960,10 @@ const Pano=(function(){
   function frame(t){
     if(!running)return;
     const dt=last?Math.min(t-last,50):16;last=t;
-    if(!interacted)yaw-=0.000035*dt;
+    if(!interacted||auto)yaw-=0.000035*dt;
+    if(yawVel){yaw+=yawVel*dt;interacted=true;}
+    if(fovTarget!==null){fov+=(fovTarget-fov)*0.12;
+      if(Math.abs(fovTarget-fov)<0.004){fov=fovTarget;fovTarget=null;}}
     if(tYaw!==null){yaw+=(tYaw-yaw)*0.08;pitch+=(tPitch-pitch)*0.08;
       if(Math.abs(tYaw-yaw)<0.0015){yaw=tYaw;pitch=tPitch;tYaw=null;}}
     resize();
@@ -859,7 +1044,7 @@ const Pano=(function(){
     }else{
       canvas.style.display='none';fb.style.display='block';fb.src=url;
     }
-    setNodeBar();
+    setNodeBar();renderMiniMap();
   }
   function buildHotspots(){
     /* أجزاء الموقع (في المكان الرئيسي) + نقاط التنقل 3D بين الأماكن */
@@ -874,31 +1059,45 @@ const Pano=(function(){
       });
     }
     if(nodes.length>1){
-      const mk=(target,label,arrow,yp)=>{
+      const AR=['١','٢','٣','٤','٥','٦'];
+      const mk=(target,label,yp)=>{
         const el=document.createElement('div');el.className='hs nav';
-        el.innerHTML='<span class="arrow">'+arrow+'</span><span class="lbl">'+label+'</span>';
+        el.innerHTML='<span class="arrow">'+AR[target]+'</span><span class="lbl">'+label+'</span>';
         el.addEventListener('click',()=>switchNode(target));
         layer.appendChild(el);
         hotspots.push({yaw:yp[0],pitch:yp[1],el});
       };
-      if(nodeIdx<nodes.length-1)mk(nodeIdx+1,'التالي: '+nodes[nodeIdx+1].label,'➜',[0,-6]);
-      if(nodeIdx>0)mk(nodeIdx-1,'رجوع: '+nodes[nodeIdx-1].label,'⬅',[180,-6]);
+      if(nodeIdx<nodes.length-1)mk(nodeIdx+1,'امشِ: '+nodes[nodeIdx+1].label,[0,-14]);
+      if(nodeIdx>0)mk(nodeIdx-1,'ارجع: '+nodes[nodeIdx-1].label,[180,-14]);
     }
   }
   function setNodeBar(){
     document.querySelectorAll('#partsBar .nodebtn').forEach((b,i)=>b.classList.toggle('on',i===nodeIdx));
   }
+  function renderMiniMap(){
+    const mm=$('#miniMap');if(!mm)return;
+    if(nodes.length<2){mm.classList.add('hidden');return;}
+    mm.classList.remove('hidden');
+    const AR=['١','٢','٣','٤','٥','٦'];
+    mm.innerHTML='<h5>🗺️ أماكن الجولة — اضغط للانتقال</h5><div class="mm-row">'+
+      nodes.map((n,i)=>`<span class="mm-dot${i===nodeIdx?' on':''}" data-i="${i}" title="${n.label}">${AR[i]}</span>${i<nodes.length-1?'<span class="mm-line"></span>':''}`).join('')+'</div>';
+    mm.querySelectorAll('.mm-dot').forEach(d=>d.addEventListener('click',()=>switchNode(+d.dataset.i)));
+  }
+  const STEP=new Audio('assets/sfx/step.wav');STEP.volume=0.55;
+  function playStep(){try{STEP.currentTime=0;STEP.play().catch(()=>{});}catch(e){}}
   function switchNode(i){
     if(i===nodeIdx||i<0||i>=nodes.length)return;
     cardEl.classList.add('hidden');
+    playStep(); /* 👣 صوت الخطوة مع كل مشية */
+    fov=Math.min(fov,63*D2R);fovTarget=75*D2R;yawVel=0;
     const fade=$('#nodeFade');
-    fade.style.opacity='1';
+    fade.style.opacity='0.5';
     setTimeout(()=>{
       nodeIdx=i;
       const n=nodes[i];
       if(ready&&gl){loadTex(n.img,()=>{});}
       else{const fb=$('#panoImgFallback');if(fb)fb.src=n.img;}
-      buildHotspots();setNodeBar();
+      buildHotspots();setNodeBar();renderMiniMap();
       if(window._curSite)$('#panoTitle').textContent='🧭 '+window._curSite.name+' — '+n.label;
       fade.style.opacity='0';
     },260);
@@ -910,7 +1109,15 @@ const Pano=(function(){
     $('#panoModal').classList.remove('open');
     document.querySelectorAll('#partsBar button').forEach(b=>b.classList.remove('on'));
   }
-  return {open,close,focusPart};
+  return {open,close,focusPart,
+    zoomBy:f=>{fov=Math.max(25*D2R,Math.min(100*D2R,fov*f));interacted=true;},
+    setAuto:b=>{auto=b;interacted=true;},
+    reset:()=>{yaw=0;pitch=-4*D2R;fov=75*D2R;tYaw=null;fovTarget=null;},
+    walk:d=>{if(!nodes.length)return;switchNode(nodeIdx+d);},
+    turn:d=>{if(d===0){yawVel=0;return;}yawVel=d*0.0017;interacted=true;auto=false;
+      const b=$('#ctlAuto');if(b)b.classList.remove('on');},
+    hasNodes:()=>nodes.length>1};
+
 })();
 
 function openPano(site){
@@ -919,7 +1126,46 @@ function openPano(site){
   Pano.open(site.pano,site);
 }
 $('#panoClose').addEventListener('click',closePano);
+$('#ctlZoomIn').addEventListener('click',()=>Pano.zoomBy(0.82));
+$('#ctlZoomOut').addEventListener('click',()=>Pano.zoomBy(1.22));
+$('#ctlReset').addEventListener('click',()=>Pano.reset());
+$('#ctlAuto').addEventListener('click',e=>{
+  const b=e.currentTarget;const on=!b.classList.contains('on');
+  b.classList.toggle('on',on);Pano.setAuto(on);
+});
+$('#ctlFull').addEventListener('click',()=>{
+  const m=$('#panoModal');
+  if(!document.fullscreenElement){(m.requestFullscreen&&m.requestFullscreen()).catch?.(()=>{});}
+  else{document.exitFullscreen&&document.exitFullscreen();}
+});
 $('#hsCardClose').addEventListener('click',()=>$('#hsCard').classList.add('hidden'));
+
+/* عصا التحكم: المشي واللف (كيبورد + أزرار لمس) */
+(function(){
+  const wp=$('#walkPad');
+  if(wp){
+    wp.addEventListener('pointerdown',e=>{
+      const b=e.target.closest('.wp');if(!b)return;
+      e.preventDefault();
+      const a=b.dataset.a;
+      if(a==='fwd'||a==='right')Pano.walk(1);  /* ▲ و ▶ = امشِ قدام */
+      else if(a==='back')Pano.walk(-1);
+      else if(a==='left')Pano.turn(1);
+    });
+    ['pointerup','pointerleave','pointercancel'].forEach(ev=>wp.addEventListener(ev,()=>Pano.turn(0)));
+  }
+  document.addEventListener('keydown',e=>{
+    if(!$('#panoModal').classList.contains('open'))return;
+    if($('#embedModal').classList.contains('open'))return; /* الجولة الحقيقية مفتوحة: الكيبورد ليها */
+    if(e.key==='ArrowUp'||e.key==='ArrowRight'||e.key==='w'){e.preventDefault();Pano.walk(1);}   /* فوق/يمين = امشِ قدام */
+    else if(e.key==='ArrowDown'||e.key==='s'){e.preventDefault();Pano.walk(-1);}
+    else if(e.key==='ArrowLeft'||e.key==='a'){e.preventDefault();Pano.turn(1);}
+  });
+  ['keyup','blur'].forEach(ev=>document.addEventListener(ev,e=>{
+    if(ev==='keyup'&&['ArrowLeft','ArrowRight','a','d'].includes(e.key))Pano.turn(0);
+    else if(ev==='blur')Pano.turn(0);
+  }));
+})();
 function closePano(){Pano.close();}
 /* =========================================================
    فيديو المقدمة السينمائية + الجولات الحقيقية
@@ -943,11 +1189,73 @@ function closeVideo(){
   if(V.onEnded){const f=V.onEnded;V.onEnded=null;f();}
 }
 const V={onEnded:null};
-function _openEmbedTour(site){
-  $('#embedTitle').textContent='🌐 '+site.name+' — جولة حقيقية 360°';
-  $('#embedNote').textContent=site.tourCredit||'';
-  $('#embedFrame').src=site.tour;
+let STOPS=[],stopIdx=0,loadTimer=null,tipsDismissed=false,triedAlt=false;
+function _curStop(){return STOPS[stopIdx]||{};}
+function stationLoading(name){
+  $('#embedLoadName').textContent=name||'جارٍ التحميل…';
+  $('#embedLoadErr').classList.add('hidden');
+  const ov=$('#embedLoading');
+  try{ov.style.backgroundImage=(window.currentSite&&currentSite.photo)?`linear-gradient(rgba(6,10,20,.82),rgba(6,10,20,.9)),url('${currentSite.photo}')`:'';}catch(e){}
+  ov.classList.remove('hidden');
+  clearTimeout(loadTimer);
+  loadTimer=setTimeout(()=>{ /* مهلة 14 ثانية */
+    const st=_curStop();
+    if(st.alt&&!triedAlt){ /* مصدر بديل تلقائي: المشغّل الرسمي ← mpembed */
+      triedAlt=true;
+      $('#embedLoadName').textContent=(st.label||'الجولة')+' — بنحاول من مصدر بديل…';
+      $('#embedNewTab').href=st.alt;
+      $('#embedFrame').src=st.alt;
+      loadTimer=setTimeout(()=>$('#embedLoadErr').classList.remove('hidden'),14000); /* البديل كمان لو علق */
+      return;
+    }
+    $('#embedLoadErr').classList.remove('hidden');
+  },14000);
+}
+function stationLoaded(){clearTimeout(loadTimer);$('#embedLoading').classList.add('hidden');}
+function showTourTips(){
+  const t=$('#tourTips');if(!t||tipsDismissed){if(t)t.classList.add('hidden');return;}
+  $('#tourTipsTxt').textContent='🖱️ اسحب بالماوس أو بإصبعك لِفّ المشهد • عجلة الماوس أو أصابعك للتقريب والتبعيد'+
+    (STOPS.length>1?' • ↑→ المحطة التالية و ↓← السابقة':'')+
+    ' • جوا مسح Matterport: زر الدول هاوس (المكعب) يعرض المعبد كامل وتتحرك بحرية';
+  t.classList.remove('hidden');
+}
+function renderStopBar(){
+  const bar=$('#stopBar');
+  if(STOPS.length<2){bar.classList.add('hidden');return;}
+  bar.classList.remove('hidden');
+  const AR=['١','٢','٣','٤','٥','٦'];
+  bar.innerHTML='<span class="sb-lbl">🚶 امشِ بين المحطات: '+STOPS[stopIdx].label+' <span style="color:#8fa3c8;font-weight:400">(كيبورد: ↑→ التالية • ↓← السابقة)</span></span>'+STOPS.map((st,i)=>
+    (i>0?'<span class="sb-line"></span>':'')+
+    `<span class="sb-dot${i===stopIdx?' on':''}" data-i="${i}" title="${st.label}">${AR[i]}</span>`).join('');
+  bar.querySelectorAll('.sb-dot').forEach(d=>d.addEventListener('click',()=>switchStop(+d.dataset.i)));
+}
+function switchStop(i){
+  if(!STOPS[i])return;
+  stopIdx=i;triedAlt=false;
+  $('#embedFrame').src=STOPS[i].src;
+  $('#embedNewTab').href=STOPS[i].src;
+  stationLoading(STOPS[i].label);
+  $('#embedAltBtn').classList.toggle('hidden',!(_curStop().alt));
+  renderStopBar();
+}
+function openEmbed(url,title,note,stops){
+  STOPS=Array.isArray(stops)?stops:[];stopIdx=0;triedAlt=false;
+  $('#embedTitle').textContent=title;
+  $('#embedNote').textContent=note||'';
+  $('#embedFrame').src=url;
+  $('#embedNewTab').href=url;
+  stationLoading(STOPS[0]?STOPS[0].label:title);
+  $('#embedAltBtn').classList.toggle('hidden',!(_curStop().alt));
+  renderStopBar();
+  showTourTips();
   $('#embedModal').classList.add('open');
+  /* ملاحظة: من غير focus تلقائي — عشان أسهم الكيبورد تفضل تحت سيطرة شريط المحطات فوراً
+     (ولو المستخدم داس جوا الصورة، أسهم النظر بتاعة البانوراما نفسها هي اللي تشتغل) */
+}
+function _openEmbedTour(site){
+  TOURMUSIC.currentTime=0;TOURMUSIC.play().catch(()=>{}); /* 🎵 */
+  const stops=site.stops?site.stops:[{src:site.tour,alt:site.tourAlt,label:'الجولة الحقيقية'}];
+  openEmbed(stops[0].src,'🌐 '+site.name+' — الجولة الحقيقية 🚶','🎵 موسيقى أثرية شرقية مرافقة • اضغط على الأرقام فوق لتتمشى بين المحطات الحقيقية • '+(site.tourCredit||''),stops);
 }
 function openEmbedTour(site){
   playIntro(site,()=>_openEmbedTour(site));
@@ -956,6 +1264,24 @@ $('#videoSkip').addEventListener('click',()=>closeVideo()); /* تخطي = بدء
 $('#embedClose').addEventListener('click',()=>{
   $('#embedModal').classList.remove('open');
   $('#embedFrame').src=''; /* إيقاف تشغيل الجولة */
+  TOURMUSIC.pause(); /* 🎵 تقف الموسيقى مع إغلاق الجولة */
+  stationLoaded();$('#tourTips').classList.add('hidden');
+});
+$('#embedFrame').addEventListener('load',stationLoaded); /* الجولة حملت فعلاً */
+$('#embedRetry').addEventListener('click',()=>{
+  const st=_curStop();
+  let next=$('#embedFrame').src||st.src;
+  if(st.alt&&!triedAlt){triedAlt=true;next=st.alt;} /* أول محاولة: المصدر البديل */
+  $('#embedFrame').src='';
+  setTimeout(()=>{$('#embedNewTab').href=next;$('#embedFrame').src=next;stationLoading(st.label);},150);
+});
+$('#tourTipsX').addEventListener('click',()=>{tipsDismissed=true;$('#tourTips').classList.add('hidden');});
+$('#embedAltBtn').addEventListener('click',()=>{
+  const st=_curStop();if(!st.alt)return;
+  triedAlt=true;
+  $('#embedNewTab').href=st.alt;
+  stationLoading((st.label||'الجولة')+' — المصدر البديل');
+  $('#embedFrame').src=st.alt;
 });
 
 
